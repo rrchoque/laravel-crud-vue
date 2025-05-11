@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -13,7 +14,8 @@ class BlogController extends Controller
      */
     public function index()
     {
-        //
+        $blogs = Blog::all();
+        return response()->json($blogs);
     }
 
     /**
@@ -34,7 +36,8 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $blog = Blog::create($request->post());
+        return response()->json(['blog' => $blog], 201);
     }
 
     /**
@@ -43,9 +46,9 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Blog $blog)
     {
-        //
+        return response()->json($blog);
     }
 
     /**
@@ -66,9 +69,10 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Blog $blog)
     {
-        //
+        $blog->update($request->post());
+        return response()->json(['blog' => $blog], 200);
     }
 
     /**
@@ -77,8 +81,9 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Blog $blog)
     {
-        //
+        $blog->delete();
+        return response()->json(['message' => 'Blog eliminado'], 200);
     }
 }
