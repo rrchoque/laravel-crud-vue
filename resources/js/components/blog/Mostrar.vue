@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-lg-12 mb-4">
-            <router-link :to="{ name: crearBlog }" class="btn btn-success">
+            <router-link :to="{ name: 'crearBlog' }" class="btn btn-success">
                 <i class="fa-solid fa-circle-plus"></i>
             </router-link>
         </div>

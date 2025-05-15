@@ -36,7 +36,12 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        $blog = Blog::create($request->post());
+        $blog = new Blog();
+        $blog->titulo = $request->titulo;
+        $blog->slug = $this->generarSlug($request->titulo);
+        $blog->contenido = $request->contenido;
+        $blog->save();
+
         return response()->json(['blog' => $blog], 201);
     }
 
@@ -71,6 +76,9 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
+        if ($request->has('titulo')) {
+            $blog->slug = $this->generarSlug($request->titulo);
+        }
         $blog->update($request->post());
         return response()->json(['blog' => $blog], 200);
     }
@@ -85,5 +93,22 @@ class BlogController extends Controller
     {
         $blog->delete();
         return response()->json(['message' => 'Blog eliminado'], 200);
+    }
+
+    private function generarSlug(string $titulo): string
+    {
+        // 1. Convertir el título a minúsculas
+        $slug = strtolower($titulo);
+
+        // 2. Reemplazar caracteres especiales y espacios por guiones
+        $slug = preg_replace('/[^a-z0-9-]+/', '-', $slug);
+
+        // 3. Eliminar guiones duplicados
+        $slug = preg_replace('/-+/', '-', $slug);
+
+        // 4. Eliminar guiones al principio y al final
+        $slug = trim($slug, '-');
+
+        return $slug;
     }
 }
