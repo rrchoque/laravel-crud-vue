@@ -27,7 +27,7 @@
                             <td>
                                 <router-link
                                     :to="{
-                                        name: editarBlog,
+                                        name: 'editarBlog',
                                         params: { id: blog.id },
                                     }"
                                     class="btn btn-warning"
@@ -65,6 +65,7 @@ export default {
                 .get("/api/blogs")
                 .then((response) => {
                     this.blogs = response.data;
+                    //console.log(this.blogs);
                 })
                 .catch((error) => {
                     this.blogs = [];
